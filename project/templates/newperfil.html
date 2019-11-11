@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Nuevo Perfil</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }} Go to <a href="{{ url_for('auth.signup') }}">signup page</a>.
+            </div>
+        {% endif %}
+        {% endwith %}
+        <form action="/newperfil" >
+
+            </a>
+                <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+            Paciente
+            </a>
+            </a>
+                <a href="{{ url_for('auth.signupProf') }}" class="navbar-item">
+            Profesional
+            </a>
+        </form>
+
+        
+    </div>
+</div>
+{% endblock %}

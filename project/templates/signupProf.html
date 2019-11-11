@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Registro</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }} Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+            </div>
+        {% endif %}
+        {% endwith %}
+        <form action="/signupProf" method="POST">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="email" name="email" placeholder="Mail" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="name" placeholder="Nombre" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="apellido" placeholder="Apellido" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="number" name="matricula" placeholder="Matricula" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="password" name="password" placeholder="Contraseña">
+                </div>
+            </div>
+
+            <div class="box">    
+            Seleccione sus dias de atencion:
+                {% if dias %}
+                <div class="list-group">
+                    {% for dia in dias[::-1] %}
+                        <input type="checkbox" name="dia" value="{{dia.descripcion}}">{{dia.descripcion}}<br>  
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>No existen dias de atencion.</p>
+                {% endif %}
+            </div>
+
+            <div class="box">    
+            Seleccione su especialidad:
+                {% if especialidad %}
+                <div class="list-group">
+                    {% for esp in especialidad[::-1] %}
+                        <input type="checkbox" name="esp" value="{{esp.descripcion}}">{{esp.descripcion}}<br>  
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>No existen especialidades disponibles.</p>
+                {% endif %}
+            </div>
+
+            <div class="box">    
+            Seleccione su especialidad:
+                {% if horas %}
+                <div class="list-group">
+                    {% for esp in horas[::-1] %}
+                        <input type="checkbox" name="esp" value="{{esp.hora_inicio}}">{{esp.hora_inicio, esp_hora_final}}<br>  
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>No existen especialidades disponibles.</p>
+                {% endif %}
+            </div>
+
+
+            <button class="button is-block is-info is-large is-fullwidth">Registrate</button>
+
+
+    </div>
+</div>
+{% endblock %}
