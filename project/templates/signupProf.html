@@ -60,27 +60,13 @@
                 {% if especialidad %}
                 <div class="list-group">
                     {% for esp in especialidad[::-1] %}
-                        <input type="checkbox" name="esp" value="{{esp.descripcion}}">{{esp.descripcion}}<br>  
+                        <input type="radio" name="esp" value="{{esp.id}}">{{esp.descripcion}}<br>  
                     {% endfor %}
                 </div>
                 {% else %}
                 <p>No existen especialidades disponibles.</p>
                 {% endif %}
             </div>
-
-            <div class="box">    
-            Seleccione su especialidad:
-                {% if horas %}
-                <div class="list-group">
-                    {% for esp in horas[::-1] %}
-                        <input type="checkbox" name="esp" value="{{esp.hora_inicio}}">{{esp.hora_inicio, esp_hora_final}}<br>  
-                    {% endfor %}
-                </div>
-                {% else %}
-                <p>No existen especialidades disponibles.</p>
-                {% endif %}
-            </div>
-
 
             <button class="button is-block is-info is-large is-fullwidth">Registrate</button>
 

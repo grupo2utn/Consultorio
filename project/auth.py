@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
-from .models import User, db, Paciente, Profesional, DiaAtencion, Horario, Especialidad
+from .models import db, Paciente, Profesional, DiaAtencion, Horario, Especialidad, EspecialidadProfesional
 
 
 auth = Blueprint('auth', __name__)
@@ -16,7 +16,9 @@ def login_post():
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
 
-    user = Paciente.query.filter_by(email=email).first()
+    user = Profesional.query.filter_by(email=email).first()
+    if not user:
+        user = Profesional.query.filter_by(email=email).first()
 
     if not user or not check_password_hash(user.password, password):
         flash('Por favor revise los datos ingresados y pruebe nuevamente.')
@@ -35,7 +37,6 @@ def signup_post():
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
-    perfil = request.form.get('perfil')
     apellido = request.form.get('apellido')
     dni = request.form.get('dni')
     telefono = request.form.get('telefono')
@@ -65,12 +66,11 @@ def signupProf():
 @auth.route('/signupProf', methods=['POST'])
 def signupProf_post():
     email = request.form.get('email')
-    nombre = request.form.get('name')
+    name = request.form.get('name')
     password = request.form.get('password')
-    perfil = request.form.get('perfil')
     apellido = request.form.get('apellido')
     matricula = request.form.get('matricula')
-    telefono = request.form.get('telefono')
+    esp = request.form.get('esp')
 
     profesional = Profesional.query.filter_by(email=email).first()
 
@@ -78,12 +78,11 @@ def signupProf_post():
         flash('El Mail ya se encuentra en nuestros registros')
         return redirect(url_for('auth.signup'))
 
-    new_user = Profesional(email=email, nombre=name, apellido=apellido, dni=dni, telefono=telefono, password=generate_password_hash(password, method='sha256')  )
+    new_user = Profesional(email=email, nombre=name, apellido=apellido, matricula=matricula, password=generate_password_hash(password, method='sha256')  )
 
     db.session.add(new_user)
     db.session.commit()
 
-   
     return redirect(url_for('auth.login'))
 
 

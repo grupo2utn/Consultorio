@@ -4,20 +4,8 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Time
 
 db = SQLAlchemy()
 
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
-    name = db.Column(db.String(1000))
-    perfil = db.Column(db.Integer, ForeignKey('perfil.id'))
 
-class Perfil(db.Model):
-    __tablename__ = 'perfil'
-    id = db.Column(db.Integer, primary_key=True)
-    perfil = db.Column(db.String(100))
-
-
-especialidadProfesional = db.Table('especialidadProfesional',
+EspecialidadProfesional = db.Table('EspecialidadProfesional',
     db.Column('id_Profesional',db.Integer, db.ForeignKey('profesional.id'),primary_key=True),
     db.Column('id_Especialidad',db.Integer, db.ForeignKey('especialidad.id'),primary_key=True))
 
@@ -25,13 +13,11 @@ consultorioProfesional = db.Table('consultorioProfesional',
     db.Column('id_Profesional',db.Integer, db.ForeignKey('profesional.id'),primary_key=True),
     db.Column('id_Consultorio',db.Integer, db.ForeignKey('consultorio.id'),primary_key=True))
     
-diaProfesional = db.Table('diaProfesional',
-    db.Column('id_Profesional',db.Integer, db.ForeignKey('profesional.id'),primary_key=True),
-    db.Column('id_Dia',db.Integer, db.ForeignKey('diaAtencion.id'),primary_key=True))
 
 horaProfesional = db.Table('horaProfesional',
     db.Column('id_Profesional',db.Integer, db.ForeignKey('profesional.id'),primary_key=True),
-    db.Column('id_Horario',db.Integer, db.ForeignKey('horario.id'),primary_key=True))
+    db.Column('id_Horario',db.Integer, db.ForeignKey('horario.id'),primary_key=True),
+    db.Column('id_Dia',db.Integer, db.ForeignKey('diaAtencion.id'),primary_key=True))
 
 class Paciente(UserMixin, db.Model):
     __tablename__ = 'paciente'
@@ -53,12 +39,12 @@ class Profesional(UserMixin, db.Model):
     nombre = db.Column(db.String(30))
     apellido = db.Column(db.String(30))
     matricula = db.Column(db.String(8))
+    password = db.Column(db.String(100))
 
     turnos = db.relationship('Turnos', backref='profesional', lazy=True)
     
-    EspecialidadProfesional = db.relationship('Especialidad', secondary=especialidadProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
+    EspecialidadProfesional = db.relationship('Especialidad', secondary=EspecialidadProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
     ConsultorioProfesional = db.relationship('Consultorio', secondary=consultorioProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
-    DiaProfesional = db.relationship('DiaAtencion', secondary=diaProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
     HoraProfesional = db.relationship('Horario', secondary=horaProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
 
 
@@ -94,4 +80,5 @@ class Turnos(db.Model):
     id_Dia = db.Column(db.Integer, ForeignKey('diaAtencion.id'))
     id_Horario = db.Column(db.Integer, ForeignKey('horario.id'))
     id_Paciente = db.Column(db.Integer, ForeignKey('paciente.id'))
+    fecha = db.Column(db.Date())
     descripcion = db.Column(db.String(20))

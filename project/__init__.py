@@ -19,11 +19,14 @@ def create_app(config_name):
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    from .models import Paciente
+    from .models import Paciente, Profesional
 
     @login_manager.user_loader
     def load_user(user_id):
-        return Paciente.query.get(int(user_id))
+        a =  Paciente.query.get(int(user_id))
+        if not a:
+            a = Profesional.query.get(int(user_id))
+        return a
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
