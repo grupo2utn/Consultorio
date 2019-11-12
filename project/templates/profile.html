@@ -4,4 +4,32 @@
 <h1 class="title">
   Bienvenido, {{ name }}!!!
 </h1>
+
+    <form action="/profile/" >
+    	{% if a %} 
+            <a>
+                <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
+            Agregar dias de atencion
+            </a>
+        {% endif %}
+    </form>
+
+{% if dias %}
+  <form action="/profile/dias" method="POST">
+            <div class="box">    
+            Seleccione sus dias de atencion:
+                {% if dias %}
+                <div class="list-group">
+                    {% for dia in dias[::-1] %}
+                        <input type="checkbox" name="dias" value="{{dia.id}}">{{dia.descripcion}}<br>  
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>No existen dias de atencion.</p>
+                {% endif %}
+            </div>
+           <button class="button is-block is-info is-large is-fullwidth">Registrate</button>
+    </form>
+{% endif %}
+
 {% endblock %}

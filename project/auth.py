@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
-from .models import db, Paciente, Profesional, DiaAtencion, Horario, Especialidad, EspecialidadProfesional
+from .models import db, Paciente, Profesional, DiaAtencion, Horario, Especialidad
 
 
 auth = Blueprint('auth', __name__)
@@ -18,7 +18,7 @@ def login_post():
 
     user = Profesional.query.filter_by(email=email).first()
     if not user:
-        user = Profesional.query.filter_by(email=email).first()
+        user = Paciente.query.filter_by(email=email).first()
 
     if not user or not check_password_hash(user.password, password):
         flash('Por favor revise los datos ingresados y pruebe nuevamente.')
@@ -70,7 +70,7 @@ def signupProf_post():
     password = request.form.get('password')
     apellido = request.form.get('apellido')
     matricula = request.form.get('matricula')
-    esp = request.form.get('esp')
+    
 
     profesional = Profesional.query.filter_by(email=email).first()
 
@@ -81,6 +81,14 @@ def signupProf_post():
     new_user = Profesional(email=email, nombre=name, apellido=apellido, matricula=matricula, password=generate_password_hash(password, method='sha256')  )
 
     db.session.add(new_user)
+    db.session.commit()
+
+    esp= request.form.get('esp')
+    a = Profesional.query.filter_by(email=email).first()
+    b = Especialidad.query.filter_by(id=esp).first()
+
+    a.EspecialidadProfesional.append(b)
+    db.session.add(a)
     db.session.commit()
 
     return redirect(url_for('auth.login'))
