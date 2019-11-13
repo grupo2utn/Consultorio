@@ -11,8 +11,9 @@ def index():
 @main.route('/profile')
 @login_required
 def profile():
-    a = current_user.__name__ is Profesional
-    return render_template('profile.html', name=current_user.apellido, a =a )
+    if current_user is Profesional:
+        a = current_user.EspecialidadProfesional
+    return render_template('profile.html', name=current_user.nombre)
 
 
 @main.route('/profile/dias')

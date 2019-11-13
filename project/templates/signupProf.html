@@ -41,20 +41,6 @@
                     <input class="input is-large" type="password" name="password" placeholder="Contraseña">
                 </div>
             </div>
-
-            <div class="box">    
-            Seleccione sus dias de atencion:
-                {% if dias %}
-                <div class="list-group">
-                    {% for dia in dias[::-1] %}
-                        <input type="checkbox" name="dia" value="{{dia.descripcion}}">{{dia.descripcion}}<br>  
-                    {% endfor %}
-                </div>
-                {% else %}
-                <p>No existen dias de atencion.</p>
-                {% endif %}
-            </div>
-
             <div class="box">    
             Seleccione su especialidad:
                 {% if especialidad %}
