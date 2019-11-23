@@ -14,11 +14,6 @@ consultorioProfesional = db.Table('consultorioProfesional',
     db.Column('id_Consultorio',db.Integer, db.ForeignKey('consultorio.id'),primary_key=True))
     
 
-horaProfesional = db.Table('horaProfesional',
-    db.Column('id_Profesional',db.Integer, db.ForeignKey('profesional.id'),primary_key=True),
-    db.Column('id_Horario',db.Integer, db.ForeignKey('horario.id'),primary_key=True),
-    db.Column('id_Dia',db.Integer, db.ForeignKey('diaAtencion.id'),primary_key=True))
-
 class Paciente(UserMixin, db.Model):
     __tablename__ = 'paciente'
     id = db.Column(db.Integer, primary_key=True)
@@ -42,17 +37,19 @@ class Profesional(UserMixin, db.Model):
     password = db.Column(db.String(100))
 
     turnos = db.relationship('Turnos', backref='profesional', lazy=True)
+    atencionProfesional = db.relationship('AtencionProfesional', backref='profesional', lazy=True)
     
-    EspecialidadProfesional = db.relationship('Especialidad', secondary=EspecialidadProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
-    ConsultorioProfesional = db.relationship('Consultorio', secondary=consultorioProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
-    HoraProfesional = db.relationship('Horario', secondary=horaProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
+    EspecialidadProfesional = db.relationship('Especialidad', secondary=EspecialidadProfesional, lazy='subquery', backref=db.backref('Profesional', lazy=True))
+    ConsultorioProfesional = db.relationship('Consultorio', secondary=consultorioProfesional, lazy='subquery', backref=db.backref('Profesional', lazy=True))
 
 
 class DiaAtencion(db.Model):
     __tablename__ = 'diaAtencion'
     id = db.Column(db.Integer, primary_key=True)
     descripcion = db.Column(db.String(10))
-    turnos = db.relationship('Turnos', backref='diaatencion', lazy=True)
+
+    turnos = db.relationship('Turnos', backref='diaAtencion', lazy=True)
+    atencionProfesional = db.relationship('AtencionProfesional', backref='diaAtencion', lazy=True)
 
 class Especialidad(db.Model):
     __tablename__ = 'especialidad'
@@ -71,7 +68,8 @@ class Horario(db.Model):
     hora_inicio = db.Column(db.Time())  
     hora_final = db.Column(db.Time())
     
-    turnos = db.relationship('Turnos', backref='horarios', lazy=True)
+    turnos = db.relationship('Turnos', backref='horario', lazy=True)
+    atencionProfesional = db.relationship('AtencionProfesional', backref='horario', lazy=True)
 
 class Turnos(db.Model):
     __tablename__ = 'turnos'
@@ -82,3 +80,11 @@ class Turnos(db.Model):
     id_Paciente = db.Column(db.Integer, ForeignKey('paciente.id'))
     fecha = db.Column(db.Date())
     descripcion = db.Column(db.String(20))
+
+class AtencionProfesional(db.Model):
+    __tablename__ = 'atencionProfesional'
+    id = db.Column(db.Integer, primary_key=True)
+    id_Profesional = db.Column(db.Integer, ForeignKey('profesional.id'))
+    id_Dia = db.Column(db.Integer, ForeignKey('diaAtencion.id'))
+    id_Horario = db.Column(db.Integer, ForeignKey('horario.id'))
+

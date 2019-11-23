@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
-from .models import db, Horario, DiaAtencion,Profesional
-
+from .models import db, Horario, DiaAtencion,Profesional, AtencionProfesional
 main = Blueprint('main', __name__)
 
 @main.route('/')
@@ -11,25 +10,40 @@ def index():
 @main.route('/profile')
 @login_required
 def profile():
-    if current_user is Profesional:
-        a = current_user.EspecialidadProfesional
-    return render_template('profile.html', name=current_user.nombre)
+    bmail = current_user.email
+    user = Profesional.query.filter_by(email=bmail).first()
+    name = current_user.nombre
+    
+    if not user:
+        a = "Paciente"
+    else:
+        a = "Profesional"
+    return render_template('profile.html', name= name, a=a)
+
+@main.route('/profile')
+def signup():
+    return render_template('profile.html')
 
 
 @main.route('/profile/dias')
 @login_required
-def profile_dias():
+def profile_dias():    
     dias = DiaAtencion.query.all()
     horas = Horario.query.all()
     return render_template('profile.html', dias=dias, horas=horas)
 
-
-
-@main.route('/profile/dias', methods=['GET','POST'])
+@main.route('/profile/dias', methods=['POST'])
 @login_required
-def profile_diasPOST():
-    if request.method == 'POST':
-        list = []
-        list = request.form.getlist('dias')
-    return render_template('profile.html')
+def profile_dias_POST():  
+    dia = request.form.get('dia')
+    c = DiaAtencion.query.filter_by(id=dia).first()
+    user = current_user.id
+    a = Profesional.query.filter_by(id=user).first()
+    lista = request.form.getlist('horasAingresar')
+    for hora in lista:
+        b = Horario.query.filter_by(id=hora).first()                          
+        new_atencion = AtencionProfesional(id_Profesional=user,id_Dia=dia,id_Horario=hora)
+        db.session.add(new_atencion)
 
+    db.session.commit()  
+    return redirect(url_for('main.index'))

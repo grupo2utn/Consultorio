@@ -6,7 +6,7 @@
 </h1>
 
     <form action="/profile/" >
-    	{% if name %} 
+    	{% if a == "Profesional"%}
             <a>
                 <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
             Agregar dias de atencion
@@ -17,19 +17,34 @@
 {% if dias %}
   <form action="/profile/dias" method="POST">
             <div class="box">    
-            Seleccione sus dias de atencion:
+            Seleccione su nuevo dia de atencion:
                 {% if dias %}
                 <div class="list-group">
-                    {% for dia in dias[::-1] %}
-                        <input type="checkbox" name="dias" value="{{dia.id}}">{{dia.descripcion}}<br>  
+                    {% for dia in dias[0::] %}
+                        <input type="radio" name="dia" value="{{dia.id}}">{{dia.descripcion}}<br>
                     {% endfor %}
                 </div>
-                {% else %}
-                <p>No existen dias de atencion.</p>
+                {% endif %}
+
+            </div>
+            <div class="box">    
+            Seleccione sus horarios de atencion para el dia: {{ dia }}:
+                {% if horas %}
+                <div class="list-group">
+                    {% for hora in horas[0::] %}
+                        <input type="checkbox" name="horasAingresar" value="{{hora.id}}">{{hora.hora_inicio}}<br>  
+                    {% endfor %}
+                </div>
                 {% endif %}
             </div>
-           <button class="button is-block is-info is-large is-fullwidth">Registrate</button>
+            <a>
+            	<button class="button is-block is-info is-large is-fullwidth">Siguiente</button>
+
+            </a>
     </form>
 {% endif %}
+
+
+
 
 {% endblock %}

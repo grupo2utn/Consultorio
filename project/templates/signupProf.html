@@ -45,7 +45,7 @@
             Seleccione su especialidad:
                 {% if especialidad %}
                 <div class="list-group">
-                    {% for esp in especialidad[::-1] %}
+                    {% for esp in especialidad[0::] %}
                         <input type="radio" name="esp" value="{{esp.id}}">{{esp.descripcion}}<br>  
                     {% endfor %}
                 </div>
