@@ -11,8 +11,27 @@
                 <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
             Agregar dias de atencion
             </a>
+            <a>
+                <a href="{{ url_for('main.profile_atencion') }}" class="navbar-item">
+            Ver mis dias de atencion
+            </a>
+            <a>
+                <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
+            Ver mis Turnos
+            </a>
+        {% endif %}
+        {% if a == "Paciente"%}
+            <a>
+                <a href="{{ url_for('main.profile_atencion') }}" class="navbar-item">
+            Solicitar Turno
+            </a>
+            <a>
+                <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
+            Ver mis Turnos
+            </a>
         {% endif %}
     </form>
+
 
 {% if dias %}
   <form action="/profile/dias" method="POST">
@@ -45,6 +64,25 @@
 {% endif %}
 
 
+{% if ate%}
+<form action="/profile/atencion" method="POST">
+            <div class="box">    
+            Estos son sus dias de atencion:
+                {% if ate %}
+                <div class="list-group">
+                    {% for a in ate[0::] %}
+					<table class="egt">
+					  <tr>
+					  	<th scope="row">Día</th>
+					    <th>{{a.id_Dia}}</th>
+					    <th>{{a.id_Horario}}</th>
+					  </tr>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+{% endif %}
 
 
 {% endblock %}

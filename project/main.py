@@ -47,3 +47,14 @@ def profile_dias_POST():
 
     db.session.commit()  
     return redirect(url_for('main.index'))
+
+
+@main.route('/profile/atencion')
+@login_required
+def profile_atencion(): 
+    user = current_user.id
+    a = Profesional.query.filter_by(id=user).first()   
+    ate = AtencionProfesional.query.filter_by(id_Profesional=user).all() 
+
+    return render_template('profile.html', ate=ate)
+
