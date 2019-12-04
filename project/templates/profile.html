@@ -14,15 +14,15 @@
             Ver mis dias de atencion
             </a>
             <a>
-                <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
+                <a href="{{ url_for('main.profile_turnos') }}" class="navbar-item">
             Ver mis Turnos
             </a> {% endif %} {% if a == "Paciente"%}
                 <a>
-                    <a href="{{ url_for('main.profile_atencion') }}" class="navbar-item">
+                    <a href="{{ url_for('main.profile_turnos') }}" class="navbar-item">
             Solicitar Turno
             </a>
                     <a>
-                        <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
+                        <a href="{{ url_for('main.profile_miturnos') }}" class="navbar-item">
             Ver mis Turnos
             </a> {% endif %}
 </form>
@@ -57,21 +57,96 @@
 <form action="/profile/atencion" method="POST">
     <div class="box">
         <div class="list-group">
-            <table>
+            <table border="2">
                 <thead>
                     <tr>
                         <th>Dia </th>
                         <th>Hora Incio </th>
+                        <th><button class="button">Eliminar Atencion</button></th>
                     </tr>
                 </thead>
                 <tr>
                     {% for a in o%}
-                    <td>{{a[0]}} </td>
-                    <td> {{a[1]}} </td>
+                    <td>{{a[1]}} </td>
+                    <td> {{a[2]}} </td>
+                    <td><input type="checkbox" name="ch" value="{{a[0]}}" /></td>
                     <tr></tr>
                     {% endfor %}
             </table>
         </div>
     </div>
-
-    {% endif %} {% endblock %}
+    {% endif %} {% if o == [] %}
+    <div class="box">
+        <td>No existen dias de Atención.</td>
+    </div>
+    {% endif%} {% if tur%}
+    <link rel="stylesheet" href="{{url_for ('static', filename = 'css/tabla.css' )}}">
+    <form action="/profile/turnos" method="POST">
+        <div class="box">
+            <div class="list-group">
+                <table border="2">
+                    <thead>
+                        <tr>
+                            <th>Nombre Paciente</th>
+                            <th>DNI </th>
+                            <th>Mail </th>
+                            <th>Telefono </th>
+                            <th>Descripcion </th>
+                            <th>Dia </th>
+                            <th>Hora </th>
+                            <th><button class="button">Eliminar Turno</button></th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        {% for a in x%}
+                        <td> {{a[2]}}, {{a[1]}} </td>
+                        <td> {{a[3]}} </td>
+                        <td> {{a[4]}} </td>
+                        <td> {{a[5]}} </td>
+                        <td> {{a[6]}} </td>
+                        <td> {{a[7]}} </td>
+                        <td> {{a[8]}} </td>
+                        <td><input type="checkbox" name="tu" value="{{a[0]}}" />{{a[0]}}</td>
+                        <tr></tr>
+                        {% endfor %}
+                </table>
+            </div>
+        </div>
+        {% endif%} {% if x == [] %}
+        <div class="box">
+            <td>No existen Turnos.</td>
+        </div>
+        {% endif%} {% if mitur%}
+        <link rel="stylesheet" href="{{url_for ('static', filename = 'css/tabla.css' )}}">
+        <form action="/profile/miturnos" method="POST">
+            <div class="box">
+                <div class="list-group">
+                    <table border="2">
+                        <thead>
+                            <tr>
+                                <th>Nombre Medico</th>
+                                <th>Mail </th>
+                                <th>Descripcion </th>
+                                <th>Dia </th>
+                                <th>Hora </th>
+                                <th><button class="button">Eliminar Turno</button></th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            {% for a in w%}
+                            <td> {{a[2]}}, {{a[1]}}</td>
+                            <td> {{a[3]}} </td>
+                            <td> {{a[4]}} </td>
+                            <td> {{a[5]}} </td>
+                            <td> {{a[6]}} </td>
+                            <td><input type="checkbox" name="tu" value="{{a[0]}}" />{{a[0]}}</td>
+                            <tr></tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+            {% endif%} {% if w == [] %}
+            <div class="box">
+                <td>No existen Turnos.</td>
+            </div>
+            {% endif%} {% endblock %}

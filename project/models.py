@@ -1,6 +1,6 @@
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy 
-from sqlalchemy import Column, ForeignKey, Integer, String, Time
+from sqlalchemy import Column, ForeignKey, Integer, String, Time, Date
 
 db = SQLAlchemy()
 
@@ -39,7 +39,7 @@ class Profesional(UserMixin, db.Model):
     turnos = db.relationship('Turnos', backref='profesional', lazy=True)
     atencionProfesional = db.relationship('AtencionProfesional', backref='profesional', lazy=True)
     
-    EspecialidadProfesional = db.relationship('Especialidad', secondary=EspecialidadProfesional, lazy='subquery', backref=db.backref('Profesional', lazy=True))
+    EspecialidadProfesional = db.relationship('Especialidad', secondary=EspecialidadProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
     ConsultorioProfesional = db.relationship('Consultorio', secondary=consultorioProfesional, lazy='subquery', backref=db.backref('Profesional', lazy=True))
 
 
@@ -78,7 +78,6 @@ class Turnos(db.Model):
     id_Dia = db.Column(db.Integer, ForeignKey('diaAtencion.id'))
     id_Horario = db.Column(db.Integer, ForeignKey('horario.id'))
     id_Paciente = db.Column(db.Integer, ForeignKey('paciente.id'))
-    fecha = db.Column(db.Date())
     descripcion = db.Column(db.String(20))
 
 class AtencionProfesional(db.Model):
