@@ -52,9 +52,13 @@ def profile_dias_POST():
 @main.route('/profile/atencion')
 @login_required
 def profile_atencion(): 
-    user = current_user.id
-    a = Profesional.query.filter_by(id=user).first()   
-    ate = AtencionProfesional.query.filter_by(id_Profesional=user).all() 
+    user = current_user.id 
+    ate = AtencionProfesional.query.filter_by(id_Profesional=user).all()
+    o = []
+    for i in ate:
+        h = Horario.query.filter_by(id=i.id_Horario).first()
+        d = DiaAtencion.query.filter_by(id=i.id_Dia).first()
+        o.append([d.descripcion, h.hora_inicio])
 
-    return render_template('profile.html', ate=ate)
+    return render_template('profile.html', ate=ate, o=o)
 

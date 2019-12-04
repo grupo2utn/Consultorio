@@ -88,3 +88,5 @@ class AtencionProfesional(db.Model):
     id_Dia = db.Column(db.Integer, ForeignKey('diaAtencion.id'))
     id_Horario = db.Column(db.Integer, ForeignKey('horario.id'))
 
+    
+

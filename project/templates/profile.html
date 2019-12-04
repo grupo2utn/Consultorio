@@ -1,88 +1,77 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <h1 class="title">
-  Bienvenido, {{ name }}!!!
+    Bienvenido al consultorio
 </h1>
 
-    <form action="/profile/" >
-    	{% if a == "Profesional"%}
-            <a>
-                <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
+<form action="/profile/">
+    {% if a == "Profesional"%}
+    <a>
+        <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
             Agregar dias de atencion
             </a>
-            <a>
-                <a href="{{ url_for('main.profile_atencion') }}" class="navbar-item">
+        <a>
+            <a href="{{ url_for('main.profile_atencion') }}" class="navbar-item">
             Ver mis dias de atencion
             </a>
             <a>
                 <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
             Ver mis Turnos
-            </a>
-        {% endif %}
-        {% if a == "Paciente"%}
-            <a>
-                <a href="{{ url_for('main.profile_atencion') }}" class="navbar-item">
+            </a> {% endif %} {% if a == "Paciente"%}
+                <a>
+                    <a href="{{ url_for('main.profile_atencion') }}" class="navbar-item">
             Solicitar Turno
             </a>
-            <a>
-                <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
+                    <a>
+                        <a href="{{ url_for('main.profile_dias') }}" class="navbar-item">
             Ver mis Turnos
-            </a>
-        {% endif %}
-    </form>
+            </a> {% endif %}
+</form>
 
 
 {% if dias %}
-  <form action="/profile/dias" method="POST">
-            <div class="box">    
-            Seleccione su nuevo dia de atencion:
-                {% if dias %}
-                <div class="list-group">
-                    {% for dia in dias[0::] %}
-                        <input type="radio" name="dia" value="{{dia.id}}">{{dia.descripcion}}<br>
-                    {% endfor %}
-                </div>
-                {% endif %}
+<form action="/profile/dias" method="POST">
+    <div class="box">
+        Seleccione su nuevo dia de atencion: {% if dias %}
+        <div class="list-group">
+            {% for dia in dias[0::] %}
+            <input type="radio" name="dia" value="{{dia.id}}">{{dia.descripcion}}<br> {% endfor %}
+        </div>
+        {% endif %}
 
-            </div>
-            <div class="box">    
-            Seleccione sus horarios de atencion para el dia: {{ dia }}:
-                {% if horas %}
-                <div class="list-group">
-                    {% for hora in horas[0::] %}
-                        <input type="checkbox" name="horasAingresar" value="{{hora.id}}">{{hora.hora_inicio}}<br>  
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-            <a>
-            	<button class="button is-block is-info is-large is-fullwidth">Siguiente</button>
+    </div>
+    <div class="box">
+        Seleccione sus horarios de atencion para el dia: {{ dia }}: {% if horas %}
+        <div class="list-group">
+            {% for hora in horas[0::] %}
+            <input type="checkbox" name="horasAingresar" value="{{hora.id}}">{{hora.hora_inicio}}<br> {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <a>
+        <button class="button is-block is-info is-large is-fullwidth">Siguiente</button>
 
-            </a>
-    </form>
-{% endif %}
-
-
-{% if ate%}
+    </a>
+</form>
+{% endif %} {% if ate%}
+<link rel="stylesheet" href="{{url_for ('static', filename = 'css/tabla.css' )}}">
 <form action="/profile/atencion" method="POST">
-            <div class="box">    
-            Estos son sus dias de atencion:
-                {% if ate %}
-                <div class="list-group">
-                    {% for a in ate[0::] %}
-					<table class="egt">
-					  <tr>
-					  	<th scope="row">Día</th>
-					    <th>{{a.id_Dia}}</th>
-					    <th>{{a.id_Horario}}</th>
-					  </tr>
+    <div class="box">
+        <div class="list-group">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dia </th>
+                        <th>Hora Incio </th>
+                    </tr>
+                </thead>
+                <tr>
+                    {% for a in o%}
+                    <td>{{a[0]}} </td>
+                    <td> {{a[1]}} </td>
+                    <tr></tr>
                     {% endfor %}
-                </div>
-                {% endif %}
-            </div>
+            </table>
+        </div>
+    </div>
 
-{% endif %}
-
-
-{% endblock %}
+    {% endif %} {% endblock %}
