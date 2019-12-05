@@ -52,7 +52,7 @@ def profile_dias_POST():
 @login_required
 def profile_atencion(): 
     user = current_user.id 
-    ate = AtencionProfesional.query.filter_by(id_Profesional=user).order_by(AtencionProfesional.id_Dia).all()
+    ate = AtencionProfesional.query.filter_by(id_Profesional=user).order_by(AtencionProfesional.id_Dia, AtencionProfesional.id_Horario).all()
     o = []
     for i in ate:
         h = Horario.query.filter_by(id=i.id_Horario).first()
@@ -76,7 +76,7 @@ def profile_atencion_POST():
 @login_required
 def profile_turnos(): 
     user = current_user.id 
-    tur = Turnos.query.filter_by(id_Profesional=user).order_by(Turnos.id_Dia).all()
+    tur = Turnos.query.filter_by(id_Profesional=user).order_by(Turnos.id_Dia, Turnos.id_Horario).all()
     x = []
     for i in tur:
         h = Horario.query.filter_by(id=i.id_Horario).first()
@@ -101,7 +101,7 @@ def profile_turnos_POST():
 @login_required
 def profile_miturnos(): 
     user = current_user.id 
-    mitur = Turnos.query.filter_by(id_Paciente=user).order_by(Turnos.id_Dia).all()
+    mitur = Turnos.query.filter_by(id_Paciente=user).order_by(Turnos.id_Dia, Turnos.id_Horario).all()
     w = []
     for i in mitur:
         h = Horario.query.filter_by(id=i.id_Horario).first()
@@ -115,7 +115,7 @@ def profile_miturnos():
 def profile_miturnos_POST(): 
     lista = request.form.getlist('tu')
     for a in lista:
-        turno = Turnos.query.filter_by(id=a[0]).first()
+        turno = Turnos.query.filter_by(id=a[-4:]).first()
         if turno:
             db.session.delete(turno)
     db.session.commit()  

@@ -16,9 +16,10 @@ def login_post():
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
 
-    user = Profesional.query.filter_by(email=email).first()
+    user = Paciente.query.filter_by(email=email).first()
     if not user:
-        user = Paciente.query.filter_by(email=email).first()
+        user = Profesional.query.filter_by(email=email).first()
+
 
     if not user or not check_password_hash(user.password, password):
         flash('Por favor revise los datos ingresados y pruebe nuevamente.')
@@ -87,11 +88,11 @@ def signupProf_post():
     a = Profesional.query.filter_by(email=email).first()
     b = Especialidad.query.filter_by(id=esp).first()
 
-    a.EspecialidadProfesional.append(b)
+    a.especialidad.append(b)
     db.session.add(a)
     db.session.commit()
 
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('main.index'))
 
 
 @auth.route('/newperfil')

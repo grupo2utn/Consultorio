@@ -38,7 +38,7 @@ def paciente_elegirProf_post():
 def paciente_elegirDiaYHora():
     dias=DiaAtencion.query.all()
     horas=Horario.query.all()
-    ate = AtencionProfesional.query.filter_by(id_Profesional=prof).order_by(AtencionProfesional.id_Dia).all()
+    ate = AtencionProfesional.query.filter_by(id_Profesional=prof).order_by(AtencionProfesional.id_Dia, AtencionProfesional.id_Horario).all()
     o = []
     for i in ate:
         h = Horario.query.filter_by(id=i.id_Horario).first()
