@@ -39,9 +39,8 @@ class Profesional(UserMixin, db.Model):
     turnos = db.relationship('Turnos', backref='profesional', lazy=True)
     atencionProfesional = db.relationship('AtencionProfesional', backref='profesional', lazy=True)
     
-    EspecialidadProfesional = db.relationship('Especialidad', secondary=EspecialidadProfesional, lazy='subquery', backref=db.backref('Profesionales', lazy=True))
     ConsultorioProfesional = db.relationship('Consultorio', secondary=consultorioProfesional, lazy='subquery', backref=db.backref('Profesional', lazy=True))
-
+    especialidad=db.relationship('Especialidad', secondary=EspecialidadProfesional, lazy='subquery', backref=db.backref('Profesional', lazy=True))
 
 class DiaAtencion(db.Model):
     __tablename__ = 'diaAtencion'

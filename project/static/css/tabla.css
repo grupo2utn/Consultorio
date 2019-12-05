@@ -15,6 +15,12 @@ body {
     width: 600px;
 }
 
+.outlinenone {
+    outline: none;
+    background-color: #369681;
+    border: 0;
+}
+
 table {
     background-color: white;
     text-align: left;
@@ -31,7 +37,7 @@ table {
     background-color: #1883ba;
     border-radius: 6px;
     border: 2px solid #0016b0;
-  }
+}
 
 th,
 td {
@@ -52,4 +58,3 @@ tr:hover td {
     background-color: #369681;
     color: white;
 }
-

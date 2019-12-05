@@ -1,0 +1,61 @@
+{% extends "base.html" %} {% block content %} {% if especialidad%}
+<form action="/turnoPaciente/atencion_especialidad" method="POST">
+    <div class="box">
+        Elija especialidad: {% if especialidad %}
+        <div class="list-group">
+            {% for esp in especialidad [0::] %}
+            <input type="radio" name="esp" value="{{esp.id}}">{{esp.descripcion}}<br> {% endfor %}
+        </div>
+        {% endif %}
+        <button class="button is-block is-info is-large is-fullwidth">Siguiente</button>
+    </div>
+
+    {% endif %} {% if profesional%}
+    <form action="/turnoPaciente/atencion_profesional" method="POST">
+        <div class="box">
+            {% if profesional %}
+            <div class="list-group">
+                {% for pro in profesional [0::] %}
+                <input type="radio" name="pro" value="{{pro.id}}">{{pro.apellido}}, {{pro.nombre}}<br> {% endfor %} {% endif %}
+            </div>
+
+
+
+            <button class="button is-block is-info is-large is-fullwidth">Siguiente</button>
+        </div>
+
+        {% endif %} {% if o %}
+        <link rel="stylesheet" href="{{url_for ('static', filename = 'css/tabla.css' )}}">
+        <form action="/turnoPaciente/atencion_dia_hora" method="POST">
+            <div class="box">
+                <div class="list-group">
+                    <table border="2">
+                        <thead>
+                            <tr>
+                                <th>Dia </th>
+                                <th>Hora Incio </th>
+                                <th><button class="button">Seleccionar Turno</button></th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            {% for a in o%}
+                            <td>{{a[2]}} </td>
+                            <td> {{a[3]}} </td>
+                            <td><input type="radio" class="form-control" name="tur" value="{{a}}" />{{a}}</td>
+                            <tr></tr>
+                            {% endfor %}
+                    </table>
+                    <div></div>
+                    <div></div>
+                    <div>
+                        <label for="obs">Tiene algun observacion para agregar al turno?</label>
+                        <input type="text" class="outlinenone" name="obs" />
+                    </div>
+                </div>
+
+            </div>
+            {% endif %} {% if profesionalTurno %}
+            <form action="/turnoPaciente/turnoRegistrado" method="POST">
+                <output> {{profesionalTurno}}</output>
+            </form>
+            {% endif %} {% endblock %}

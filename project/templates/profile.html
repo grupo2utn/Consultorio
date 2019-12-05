@@ -18,7 +18,7 @@
             Ver mis Turnos
             </a> {% endif %} {% if a == "Paciente"%}
                 <a>
-                    <a href="{{ url_for('main.profile_turnos') }}" class="navbar-item">
+                    <a href="{{ url_for('turno.paciente_elegirEsp') }}" class="navbar-item">
             Solicitar Turno
             </a>
                     <a>
@@ -106,7 +106,7 @@
                         <td> {{a[6]}} </td>
                         <td> {{a[7]}} </td>
                         <td> {{a[8]}} </td>
-                        <td><input type="checkbox" name="tu" value="{{a[0]}}" />{{a[0]}}</td>
+                        <td><input type="checkbox" name="tu" value="{{a[0]}}" /></td>
                         <tr></tr>
                         {% endfor %}
                 </table>
@@ -126,7 +126,7 @@
                             <tr>
                                 <th>Nombre Medico</th>
                                 <th>Mail </th>
-                                <th>Descripcion </th>
+                                <th>Observacion </th>
                                 <th>Dia </th>
                                 <th>Hora </th>
                                 <th><button class="button">Eliminar Turno</button></th>
@@ -139,7 +139,7 @@
                             <td> {{a[4]}} </td>
                             <td> {{a[5]}} </td>
                             <td> {{a[6]}} </td>
-                            <td><input type="checkbox" name="tu" value="{{a[0]}}" />{{a[0]}}</td>
+                            <td><input type="checkbox" name="tu" value="{{a[0]}}" /></td>
                             <tr></tr>
                             {% endfor %}
                     </table>
